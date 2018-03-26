@@ -3,12 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Elm/JQuery, cause why not</title>
+    <title>Elm / JQuery</title>
+
+    <!-- JQuery assets -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!-- Elm assets -->
+    <link rel="stylesheet" href="http://localhost:8001/src/main.css">
+    <script src="http://localhost:8001/src/main.js"></script>
 </head>
 <body>
+    <!-- Elm mount element -->
     <div id="root"></div>
+
+    <!-- Elm setup -->
+    <script type="text/javascript">
+      var root = document.getElementById('root'); // Find mount element
+      var app = Elm.Main.embed(root);             // Mount Elm app
+
+      // Initilize when Elm is ready
+      app.ports.initializeJquery.subscribe(function() {
+          $("#datepicker").datepicker({
+            onSelect: function(selectedDate) {
+              // Send date to Elm when new date is picked
+              app.ports.newDate.send(selectedDate);
+            }
+          });
+      });
+    </script>
 </body>
 </html>
